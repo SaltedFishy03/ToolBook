@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolBook.Client", "ToolBook.Client\ToolBook.Client.csproj", "{CFFEB609-6B61-4F78-ADF9-9C24B53F4938}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolBook.Server", "ToolBook.Server\ToolBook.Server.csproj", "{3F3376EE-3C84-47FF-B6C0-7FEA0D576A56}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFFEB609-6B61-4F78-ADF9-9C24B53F4938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFFEB609-6B61-4F78-ADF9-9C24B53F4938}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFFEB609-6B61-4F78-ADF9-9C24B53F4938}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFFEB609-6B61-4F78-ADF9-9C24B53F4938}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F3376EE-3C84-47FF-B6C0-7FEA0D576A56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F3376EE-3C84-47FF-B6C0-7FEA0D576A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F3376EE-3C84-47FF-B6C0-7FEA0D576A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F3376EE-3C84-47FF-B6C0-7FEA0D576A56}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
