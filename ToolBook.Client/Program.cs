@@ -2,6 +2,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+
+
+var baseUrl = builder.Configuration["ApiSettings:BaseUrl"] 
+              ?? throw new InvalidOperationException("API BaseUrl mangler");
+
+builder.Services.AddHttpClient("ToolBookApi", client =>
+{
+    client.BaseAddress = new Uri(baseUrl);
+});
 
 var app = builder.Build();
 
@@ -13,11 +24,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseRouting();
+app.UseHttpsRedirection();
+
 
 app.UseAuthorization();
-
+app.UseSession();
 app.MapStaticAssets();
 
 app.MapControllerRoute(

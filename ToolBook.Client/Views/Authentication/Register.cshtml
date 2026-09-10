@@ -1,18 +1,67 @@
-﻿@model TModel
+﻿@model ToolBook.Client.Models.Auth.RegisterViewModel
 
-@{
-    Layout = null;
-}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 75vh;">
 
-<!DOCTYPE html>
+    <div class="card shadow border-0 p-4" style="width: 100%; max-width: 400px;">
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
+        <div class="card-body">
+
+            <div class="text-center mb-4">
+                <h2>ToolBook</h2>
+                <p class="text-muted">Opret en bruger</p>
+            </div>
+
+            <form asp-action="Register" method="post">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Navn</label>
+                    <input asp-for="Name"
+                           class="form-control"
+                           placeholder="Skriv dit navn">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email"
+                           class="form-control"
+                           placeholder="Skriv din email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Adgangskode</label>
+                    <input asp-for="Password"
+                           class="form-control"
+                           placeholder="Skriv din adganskode">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="ConfirmPassword" class="form-label">Gentag adgangskode</label>
+                    <input asp-for="ConfirmPassword"
+                           class="form-control"
+                           placeholder="Gentag adgangskoden">
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100 mb-3">
+                    Opret bruger
+                </button>
+
+                <div class="text-center">
+                    <span class="text-muted">Har du allerde en bruger?</span>
+
+                    <a asp-action="Login" class="btn btn-outline-dark w-100 mt-2">
+                        Tilbage til login
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
 </div>
-</body>
-</html>
