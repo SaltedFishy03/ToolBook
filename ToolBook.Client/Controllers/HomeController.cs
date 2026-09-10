@@ -4,10 +4,15 @@ using ToolBook.Client.Models;
 
 namespace ToolBook.Client.Controllers;
 
+
 public class HomeController : Controller
 {
     public IActionResult Index()
     {
+        if (HttpContext.Session.GetString("Token") == null)
+        {
+            return RedirectToAction("Login", "Authentication");
+        }
         return View();
     }
 
