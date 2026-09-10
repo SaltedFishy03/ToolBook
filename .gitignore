@@ -1,0 +1,13 @@
+# Build-filer
+**/bin/
+**/obj/
+
+# JetBrains Rider
+.idea/
+
+# Visual Studio
+.vs/
+
+# Bruger-specifikke IDE filer
+*.user
+*.suo
