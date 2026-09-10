@@ -1,18 +1,50 @@
-﻿@model TModel
+﻿@model ToolBook.Client.Models.Auth.LoginViewModel
 
-@{
-    Layout = null;
-}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 75vh;">
 
-<!DOCTYPE html>
+    <div class="card shadow border-0 p-4" style="width: 100%; max-width: 400px;">
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
+        <div class="card-body">
+
+            <div class="text-center mb-4">
+                <h2>Login</h2>
+                <p class="text-muted">login på ToolBook</p>
+            </div>
+
+            <form asp-action="Login" method="post">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email"
+                           class="form-control"
+                           placeholder="Skriv din email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Password" class="form-label">Adgangskode</label>
+                    <input asp-for="Password"
+                           class="form-control"
+                           placeholder="Skriv din adgangskode">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100 mb-3">
+                    Login
+                </button>
+
+                <div class="text-center">
+                    <span class="text-muted">Har du ikke en bruger?</span>
+                    <a asp-action="Register" class="btn btn-outline-dark w-100 mt-2">
+                        Opret bruger
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
 </div>
-</body>
-</html>
