@@ -6,6 +6,7 @@ using ToolBook.Server.Data;
 using Scalar.AspNetCore;
 using ToolBook.Server.Models;
 using ToolBook.Server.Services;
+using ToolBook.Server.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddControllers();
 
 // Authentication services
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<JwtTokenService>();
 
 
