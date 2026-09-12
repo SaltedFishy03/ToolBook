@@ -3,6 +3,6 @@
 public enum ToolStatus
 {
     Available,
-    Maintence,
+    Maintenance,
     OutOfService
 }
