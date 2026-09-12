@@ -18,6 +18,11 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<JwtTokenService>();
 
+// CRUD services
+builder.Services.AddScoped<IToolCategoryService, ToolCategoryService>();
+builder.Services.AddScoped<IToolService, ToolService>();
+builder.Services.AddScoped<IToolTypeService, ToolTypeService>();
+
 
 // Henter JWT-konfigurationen.
 // Key ligger i User Secrets, mens Issuer og Audience ligger i appsettings.json.
