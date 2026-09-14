@@ -30,17 +30,17 @@ namespace ToolBook.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
 
                     b.Property<bool>("IsCancelled")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ReturnedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly?>("ReturnedAt")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("ToolId")
                         .HasColumnType("int");
