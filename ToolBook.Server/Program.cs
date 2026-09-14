@@ -22,6 +22,7 @@ builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<IToolCategoryService, ToolCategoryService>();
 builder.Services.AddScoped<IToolService, ToolService>();
 builder.Services.AddScoped<IToolTypeService, ToolTypeService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
 
 
 // Henter JWT-konfigurationen.
