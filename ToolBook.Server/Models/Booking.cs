@@ -4,10 +4,10 @@ public class Booking
 {
     public int Id { get; set; }
     
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
+    public DateOnly StartDate { get; set; }
+    public DateOnly EndDate { get; set; }
     
-    public DateTime? ReturnedAt { get; set; }
+    public DateOnly? ReturnedAt { get; set; }
     
     public bool IsCancelled { get; set; }
     
