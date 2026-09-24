@@ -6,7 +6,7 @@ namespace ToolBook.Server.Services.Interfaces;
 public interface IBookingService
 {
     Task<List<BookingResponse>> GetAllAsync();
-    Task<List<BookingResponse>> GetByUserIdAsync(int userId);
+    Task<List<MyBookingResponse>> GetByUserIdAsync(int userId);
     Task<BookingResponse?> GetByIdAsync(int id);
 
     Task<BookingResult> CreateAsync(CreateBookingRequest booking, int userId);

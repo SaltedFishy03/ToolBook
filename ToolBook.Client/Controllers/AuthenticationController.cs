@@ -57,7 +57,7 @@ namespace ToolBook.Client.Controllers
             HttpContext.Session.SetString("Name", authResponse.Name);
             HttpContext.Session.SetString("Role", authResponse.Role);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Tool");
         }
 
         [HttpPost]
@@ -107,7 +107,7 @@ namespace ToolBook.Client.Controllers
             HttpContext.Session.SetString("Name", authResponse.Name);
             HttpContext.Session.SetString("Role", authResponse.Role);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Tool");
         }
 
         [HttpPost]

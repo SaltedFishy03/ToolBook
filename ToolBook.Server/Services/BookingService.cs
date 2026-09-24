@@ -28,11 +28,11 @@ public class BookingService(ApplicationDbContext context) : IBookingService
         return bookings;
     }
 
-    public async Task<List<BookingResponse>> GetByUserIdAsync(int userId)
+    public async Task<List<MyBookingResponse>> GetByUserIdAsync(int userId)
     {
         var bookings = await context.Bookings
             .Where(b => b.UserId == userId)
-            .Select(b => new BookingResponse
+            .Select(b => new MyBookingResponse
             {
                 Id = b.Id,
                 StartDate = b.StartDate,
@@ -40,7 +40,9 @@ public class BookingService(ApplicationDbContext context) : IBookingService
                 ReturnedAt = b.ReturnedAt,
                 IsCancelled = b.IsCancelled,
                 UserId = b.UserId,
-                ToolId = b.ToolId
+                ToolId = b.ToolId,
+                ToolNumber = b.Tool.ToolNumber,
+                ToolTypeName = b.Tool.ToolType.Name
             })
             .ToListAsync();
 
@@ -345,8 +347,7 @@ public class BookingService(ApplicationDbContext context) : IBookingService
         return true;
     }
 
-    private async Task<bool> HasOverlapAsync(int toolId, DateOnly startDate, DateOnly endDate,
-        int? excludeBookingId = null)
+    private async Task<bool> HasOverlapAsync(int toolId, DateOnly startDate, DateOnly endDate, int? excludeBookingId = null)
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
 

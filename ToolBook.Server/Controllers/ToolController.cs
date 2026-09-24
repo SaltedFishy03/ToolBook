@@ -30,6 +30,36 @@ namespace ToolBook.Server.Controllers
             return Ok(tool);
         }
 
+        [HttpGet("by-type/{toolTypeId}")]
+        public async Task<ActionResult<List<ToolDetailsResponse>>> GetByToolTypeIdAsync(
+            int toolTypeId,
+            DateOnly? startDate,
+            DateOnly? endDate)
+        {
+            if (startDate.HasValue != endDate.HasValue)
+            {
+                return BadRequest("Vælg både startdato og slutdato.");
+            }
+
+            if (startDate.HasValue)
+            {
+                var today = DateOnly.FromDateTime(DateTime.Today);
+
+                if (startDate.Value < today)
+                {
+                    return BadRequest("Startdato må ikke være før i dag.");
+                }
+
+                if (endDate!.Value < startDate.Value)
+                {
+                    return BadRequest("Slutdato må ikke være før startdato.");
+                }
+            }
+
+            var tools = await toolService.GetByToolTypeIdAsync(toolTypeId, startDate, endDate);
+            return Ok(tools);
+        }
+        
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ToolResponse>> CreateTool(CreateToolRequest tool)
@@ -60,7 +90,7 @@ namespace ToolBook.Server.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> DeleteTool(int id)
+        public async Task<IActionResult> DeleteTool(int id)
         {
             var result = await toolService.DeleteAsync(id);
 

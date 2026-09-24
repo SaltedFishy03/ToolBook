@@ -1,0 +1,179 @@
+﻿@model List<ToolBook.Client.Models.Bookings.MyBookingResponse>
+
+
+@{
+    var today = DateOnly.FromDateTime(DateTime.Today);
+}
+
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1>Mine bookinger</h1>
+        <p class="text-muted">Her kan du se og administrere dine bookinger</p>
+    </div>
+
+    @* Besked efter oprettelse eller aflevering af booking *@
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="text-center mt-5">
+            <p class="text-muted">
+                Du har ingen bookinger endnu.
+            </p>
+
+            <a asp-controller="Tool"
+               asp-action="Index"
+               class="btn btn-primary">
+                Find værktøj
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var booking in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-sm">
+
+                        <div class="card-body d-flex flex-column">
+
+                            <h5 class="card-title">
+                                @booking.ToolTypeName
+                            </h5>
+
+                            <p class="text-muted">
+                                Værktøj #@booking.ToolNumber
+                            </p>
+
+                            <hr/>
+
+                            <p class="mb-1">
+                                <strong>Startdato:</strong>
+                                @booking.StartDate.ToString("dd/MM/yyyy")
+                            </p>
+
+                            <p class="mb-3">
+                                <strong>Slutdato:</strong>
+                                @booking.EndDate.ToString("dd/MM/yyyy")
+                            </p>
+
+
+                            @* Booking status *@
+                            @if (booking.IsCancelled)
+                            {
+                                <p class="text-danger">
+                                    <strong>Annulleret</strong>
+                                </p>
+                            }
+                            else if (booking.ReturnedAt.HasValue)
+                            {
+                                <p class="text-success">
+                                    <strong>Afleveret</strong>
+                                </p>
+
+                                <p class="text-muted">
+                                    Afleveret:
+                                    @booking.ReturnedAt.Value.ToString("dd/MM/yyyy")
+                                </p>
+                            }
+                            else if (booking.StartDate > today)
+                            {
+                                <p class="text-primary">
+                                    <strong>Kommende</strong>
+                                </p>
+                            }
+                            else if (booking.EndDate < today)
+                            {
+                                <p class="text-danger">
+                                    <strong>Ikke afleveret</strong>
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="text-success">
+                                    <strong>Igangværende</strong>
+                                </p>
+                            }
+
+
+                            @* Handlinger nederst på kortet *@
+                            <div class="mt-auto pt-3">
+
+                                @if (!booking.IsCancelled &&
+                                     !booking.ReturnedAt.HasValue)
+                                {
+                                    @* Fremtidig booking *@
+                                    @if (booking.StartDate > today)
+                                    {
+                                        <a asp-controller="Booking"
+                                           asp-action="Edit"
+                                           asp-route-id="@booking.Id"
+                                           class="btn btn-outline-primary">
+                                            Rediger
+                                        </a>
+
+                                        <form asp-controller="Booking"
+                                              asp-action="Cancel"
+                                              method="post"
+                                              class="d-inline">
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@booking.Id"/>
+
+                                            <button type="submit"
+                                                    class="btn btn-outline-danger"
+                                                    onclick="return confirm('Er du sikker på, at du vil annullere bookingen?')">
+                                                Annuller
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        @* Booking er startet *@
+                                        <a asp-controller="Booking"
+                                           asp-action="Edit"
+                                           asp-route-id="@booking.Id"
+                                           class="btn btn-outline-primary">
+                                            Rediger
+                                        </a>
+
+                                        <form asp-controller="Booking"
+                                              asp-action="Return"
+                                              method="post"
+                                              class="d-inline">
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@booking.Id"/>
+
+                                            <button type="submit"
+                                                    class="btn btn-outline-success"
+                                                    onclick="return confirm('Vil du registrere værktøjet som afleveret?')">
+                                                Aflever
+                                            </button>
+                                        </form>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+

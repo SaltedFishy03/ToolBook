@@ -30,6 +30,34 @@ namespace ToolBook.Server.Controllers
             return Ok(toolType);
         }
 
+        [HttpGet("filter")]
+        public async Task<ActionResult<List<ToolTypeResponse>>> GetToolFiltered(int? toolTypeId, int? categoryId, DateOnly? startDate, DateOnly? endDate)
+        {
+            if (startDate.HasValue && !endDate.HasValue || endDate.HasValue && !startDate.HasValue)
+            {
+                return BadRequest();
+            }
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                var today = DateOnly.FromDateTime(DateTime.Today);
+
+                if (startDate.Value < today)
+                {
+                    return BadRequest();
+                }
+
+                if (endDate.Value < startDate.Value)
+                {
+                    return BadRequest();
+                }
+            }
+            
+            var filter = await typeService.GetFilteredAsync(toolTypeId, categoryId, startDate, endDate);
+
+            return Ok(filter);
+        }
+        
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ToolTypeResponse>> CreateToolType(CreateToolTypeRequest toolType)
@@ -60,7 +88,7 @@ namespace ToolBook.Server.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> DeleteToolType(int id)
+        public async Task<IActionResult> DeleteToolType(int id)
         {
             var result = await typeService.DeleteAsync(id);
 

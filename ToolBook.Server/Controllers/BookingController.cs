@@ -35,7 +35,7 @@ namespace ToolBook.Server.Controllers
         }
 
         [HttpGet("my")]
-        public async Task<ActionResult<List<BookingResponse>>> MyBookings()
+        public async Task<ActionResult<List<MyBookingResponse>>> MyBookings()
         {
             var userId = GetCurrentUserId();
 
@@ -155,7 +155,7 @@ namespace ToolBook.Server.Controllers
         }
 
         [HttpPatch("{id}/cancel")]
-        public async Task<ActionResult> CancelBooking(int id)
+        public async Task<IActionResult> CancelBooking(int id)
         {
             var userId = GetCurrentUserId();
             if (userId == null)
@@ -179,7 +179,7 @@ namespace ToolBook.Server.Controllers
         }
 
         [HttpPatch("{id}/return")]
-        public async Task<ActionResult> ReturnBooking(int id)
+        public async Task<IActionResult> ReturnBooking(int id)
         {
             var userId = GetCurrentUserId();
             if (userId == null)

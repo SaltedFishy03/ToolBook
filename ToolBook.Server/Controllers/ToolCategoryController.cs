@@ -57,7 +57,7 @@ namespace ToolBook.Server.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategory(int id)
         {
             var result = await categoryService.DeleteAsync(id);
 

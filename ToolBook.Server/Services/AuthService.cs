@@ -7,10 +7,7 @@ using ToolBook.Server.Services.Interfaces;
 
 namespace ToolBook.Server.Services;
 
-public class AuthService(
-    ApplicationDbContext context,
-    IPasswordHasher<User> hasher,
-    JwtTokenService tokenService) : IAuthService
+public class AuthService(ApplicationDbContext context, IPasswordHasher<User> hasher, JwtTokenService tokenService) : IAuthService
 {
     public async Task<AuthResponse?> RegisterAsync(RegisterRequest request)
     {

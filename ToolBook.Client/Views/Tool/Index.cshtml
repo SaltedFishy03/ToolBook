@@ -1,0 +1,87 @@
+﻿@model ToolBook.Client.Models.Tools.ToolOverviewViewModel
+
+@{
+    var today = DateOnly.FromDateTime(DateTime.Today).ToString("yyyy-MM-dd");
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1>Tilgængeligt værktøj</h1>
+        <p class="text-muted">Søg og filtrer værktøj nedenfor</p>
+    </div>
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+
+        @* Toolfilter *@
+        <form asp-controller="Tool" asp-action="Index" method="get">
+            <div class="row g-3">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <div class="col-md-6">
+                    <label asp-for="ToolTypeId" class="form-label">Værktøjstype</label>
+                    <select asp-for="ToolTypeId" class="form-select">
+                        <option value="">Alle værktøjstyper</option>
+
+                        @foreach (var toolType in Model.ToolTypes)
+                        {
+                            <option value="@toolType.Id">@toolType.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="CategoryId" class="form-label">Kategori</label>
+                    <select asp-for="CategoryId" class="form-select">
+                        <option value="">Alle værktøjs kategorier</option>
+
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="StartDate" class="form-label">Startdato</label>
+                    <input asp-for="StartDate" type="date" class="form-control" min="@today"/>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="EndDate" class="form-label">Slutdato</label>
+                    <input asp-for="EndDate" type="date" class="form-control" min="@today"/>
+                </div>
+
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary px-4">Filtrer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row g-4 mt-3">
+        @if (!Model.FilteredToolTypes.Any())
+        {
+            <p>Ingen værktøjer matcher de valgte filtre.</p>
+        }
+        else
+        {
+            @foreach (var toolType in Model.FilteredToolTypes)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@toolType.Name</h5>
+                            <p class="text-muted">@toolType.CategoryName</p>
+                            <p class="card-text">@toolType.Description</p>
+                            <a asp-action="Details"
+                               asp-route-id="@toolType.Id"
+                               asp-route-startDate="@Model.StartDate"
+                               asp-route-endDate="@Model.EndDate"
+                               class="btn btn-primary">
+                                Se værktøj
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

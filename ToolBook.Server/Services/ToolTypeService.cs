@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ToolBook.Server.Data;
 using ToolBook.Server.DTOs.ToolType;
+using ToolBook.Server.Enums;
 using ToolBook.Server.Models;
 using ToolBook.Server.Services.Interfaces;
 
@@ -34,8 +35,84 @@ public class ToolTypeService(ApplicationDbContext context) : IToolTypeService
                 CategoryId = t.CategoryId,
                 CategoryName = t.Category.Name
             }).FirstOrDefaultAsync();
-        
+
         return toolType;
+    }
+
+    private bool IsToolAvailable(Tool tool, DateOnly startDate, DateOnly endDate)
+    {
+        if (tool.Status != ToolStatus.Available)
+        {
+            return false;
+        }
+
+        var today = DateOnly.FromDateTime(DateTime.Today);
+
+        foreach (var booking in tool.Bookings)
+        {
+            if (booking.IsCancelled)
+            {
+                continue;
+            }
+
+            if (!booking.ReturnedAt.HasValue && booking.EndDate < today)
+            {
+                return false;
+            }
+
+            var bookingEnd = booking.ReturnedAt ?? booking.EndDate;
+
+            var overlaps =
+                booking.StartDate <= endDate &&
+                bookingEnd >= startDate;
+
+            if (overlaps)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public async Task<List<ToolTypeResponse>> GetFilteredAsync(int? toolTypeId, int? categoryId, DateOnly? startDate, DateOnly? endDate)
+    {
+        var toolTypes = await context.ToolTypes
+            .Include(tt => tt.Category)
+            .Include(tt => tt.Tools)
+            .ThenInclude(t => t.Bookings)
+            .ToListAsync();
+
+        if (toolTypeId.HasValue)
+        {
+            toolTypes = toolTypes
+                .Where(tt => tt.Id == toolTypeId.Value)
+                .ToList();
+        }
+
+        if (categoryId.HasValue)
+        {
+            toolTypes = toolTypes
+                .Where(tt => tt.CategoryId == categoryId.Value)
+                .ToList();
+        }
+
+        if (startDate.HasValue && endDate.HasValue)
+        {
+            toolTypes = toolTypes
+                .Where(tt => tt.Tools.Any(tool =>
+                    IsToolAvailable(tool, startDate.Value, endDate.Value)))
+                .ToList();
+        }
+
+        return toolTypes.Select(tt => new ToolTypeResponse
+        {
+            Id = tt.Id,
+            Name = tt.Name,
+            Description = tt.Description,
+            CategoryId = tt.CategoryId,
+            CategoryName = tt.Category.Name
+        }).ToList();
     }
 
     public async Task<ToolTypeResponse?> CreateAsync(CreateToolTypeRequest toolType)
@@ -46,10 +123,10 @@ public class ToolTypeService(ApplicationDbContext context) : IToolTypeService
         {
             return null;
         }
-        
+
         var toolTypeExists = await context.ToolTypes.AnyAsync(t =>
-                t.Name == toolType.Name &&
-                t.CategoryId == toolType.CategoryId);
+            t.Name == toolType.Name &&
+            t.CategoryId == toolType.CategoryId);
 
         if (toolTypeExists)
         {
@@ -84,14 +161,14 @@ public class ToolTypeService(ApplicationDbContext context) : IToolTypeService
         {
             return null;
         }
-        
+
         var toolCategory = await context.ToolCategories.FindAsync(toolType.CategoryId);
 
         if (toolCategory == null)
         {
             return null;
         }
-        
+
         var toolTypeExists = await context.ToolTypes.AnyAsync(t =>
             t.Name == toolType.Name &&
             t.CategoryId == toolType.CategoryId &&
@@ -115,7 +192,6 @@ public class ToolTypeService(ApplicationDbContext context) : IToolTypeService
             CategoryId = existingToolType.CategoryId,
             CategoryName = toolCategory.Name
         };
-
     }
 
     public async Task<bool?> DeleteAsync(int id)
