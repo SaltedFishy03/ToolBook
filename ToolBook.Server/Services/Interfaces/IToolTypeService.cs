@@ -2,7 +2,7 @@
 
 namespace ToolBook.Server.Services.Interfaces;
 
-public interface IToolTypeService
+public interface IToolTypeService 
 {
     Task<List<ToolTypeResponse>> GetAllAsync();
     Task<ToolTypeResponse?> GetByIdAsync(int id);
