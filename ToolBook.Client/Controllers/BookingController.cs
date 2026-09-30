@@ -7,7 +7,7 @@ namespace ToolBook.Client.Controllers
 {
     public class BookingController(IHttpClientFactory httpClientFactory) : BaseController(httpClientFactory)
     {
-        // GET: BookingController
+        // GET: BookingController 
         public async Task<IActionResult> Index()
         {
             var accessResult = RequireLogin();
